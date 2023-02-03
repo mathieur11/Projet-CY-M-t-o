@@ -29,43 +29,46 @@ int main(int argc, char* argv[]) {
   }
   Arbre* parbre = (Arbre*) malloc(sizeof(Arbre)); parbre = NULL;
   Chainon* pliste = (Chainon*) malloc(sizeof(Chainon)); pliste = NULL;   
-    while(curseur != EOF){
-      fscanf(fichier, "%ld", &stationLue);
-      fseek(fichier, 1, SEEK_CUR);     //permet de passer à la deuxième colonne.
-      fscanf(fichier, "%lf", &donnees);
-      if(strcmp(tri, "tab") == 0){
-        positionInsert = cherchePos(pliste, donnees, sens);
-        pliste = insertPos(pliste, positionInsert, stationLue, donnees);
-      }
-      else if(strcmp(tri, "abr") == 0){
-        parbre = InsereABR(parbre, stationLue, donnees);
-      }
-      
-      
-      curseur = fgetc(fichier);
-  //  }
-    
-    //génération du fichier de sortie
-    fichier = fopen(fichierSortie, "w");  
+  while(curseur != EOF){
+    fscanf(fichier, "%ld", &stationLue);
+    fseek(fichier, 1, SEEK_CUR);     //permet de passer à la deuxième colonne.
+    fscanf(fichier, "%lf", &donnees);
     if(strcmp(tri, "tab") == 0){
-      afficheListe2(pliste, fichier);
-    } 
-    else if(strcmp(tri, "abr") == 0){
-      afficherABR(parbre, sens, fichier);
+      positionInsert = cherchePos(pliste, donnees, sens);
+      pliste = insertPos(pliste, positionInsert, stationLue, donnees);
     }
-    fclose(fichier);
+    else if(strcmp(tri, "abr") == 0){
+      parbre = InsereABR(parbre, stationLue, donnees);
+    }      
+    curseur = fgetc(fichier);
+  }    
+  
+  //génération du fichier de sortie
+  fichier = fopen(fichierSortie, "w");  
+  if(strcmp(tri, "tab") == 0){
+    afficheListe2(pliste, fichier);
+  } 
+  else if(strcmp(tri, "abr") == 0){
+    afficherABR(parbre, sens, fichier);
+  }
+  else if(strcmp(tri, "avl") == 0){
+    printf("Mode de tri non implémenté\n");
+  }
+  fclose(fichier);
+     
+     
+  //libération de la mémoire
+  free(pliste);
+  free(parbre);
     
-    //libération de la mémoire
-    free(pliste);
     
-    
-    if (access(fichierSortie, F_OK) != -1) {
-      return 0;
-    } 
-    else{
-      printf("WARNING : Le fichier de sortie n'a pas pu être généré\n");
-      return 3;
-    }  
+  if (access(fichierSortie, F_OK) != -1) {
+    return 0;
+  } 
+  else{
+    printf("WARNING : Le fichier de sortie n'a pas pu être généré\n");
+    return 3;
+  }  
 }
 
 
