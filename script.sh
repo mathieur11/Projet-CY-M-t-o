@@ -56,6 +56,7 @@ pres=
 presArg=     #presArg (pression argument), vérifie que le nombre d'argument passé pour la pression est correct
 codeRetour=
 localisation=
+optObligat=0
 fichier="vide"
 PresLoc=0    #PresLoc (présence de localisation) correspond au nombre de localisation rentrée par l'utilisateur, si PresLoc>1, erreur
 dateMin=1980-01-01
@@ -68,7 +69,6 @@ tri="avl"
 
 # Traitement des options
 while getopts ":p:t:wmhf:d:FGASOQ-:" option; do
-  echo "ca marche"
   case "$option" in
     t) tempArg=$OPTARG  #temperature
       #vérifie que l'argument de t est entre 1 et 3 inclus
@@ -77,6 +77,7 @@ while getopts ":p:t:wmhf:d:FGASOQ-:" option; do
         exit 1
       else
         temp="1,11,12,13"
+        optObligat+=1
       fi 
       ;; 
     p) presArg=$OPTARG  #pression
@@ -86,13 +87,17 @@ while getopts ":p:t:wmhf:d:FGASOQ-:" option; do
          exit 1
        else
          pres="1,3,7,8"
+         optObligat+=1
       fi 
       ;; 
     w) vent="1,4,5"
+       optObligat+=1
        ;; #vent
     m) hum="1,6"
+       optObligat+=1
        ;; #humidité
     h) alt="1,14"
+       optObligat+=1
        ;; #altitude
     :) echo "L'option -$OPTARG nécessite un argument."
        ;;
@@ -157,6 +162,11 @@ shift $((OPTIND - 1))
 
 if [ $PresLoc -ge 2 ] ; then
   echo "Trop d'options de localisation, une seule maximum"
+  exit 1
+fi
+
+if [ $optObligat -eq 0 ] ; then
+  echo "Passer au moins un type de données en option"
   exit 1
 fi
 

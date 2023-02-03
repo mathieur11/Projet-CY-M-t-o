@@ -28,13 +28,11 @@ int main(int argc, char* argv[]) {
     sens = "d";
   }
   Arbre* parbre = (Arbre*) malloc(sizeof(Arbre)); parbre = NULL;
-  Chainon* pliste = (Chainon*) malloc(sizeof(Chainon)); pliste = NULL;
-  if ((strcmp(fichierEntre, "height.csv") == 0) || (strcmp(fichierEntre, "moisture.csv") == 0)) {    // fichierEntre est égal à "height.csv"    
+  Chainon* pliste = (Chainon*) malloc(sizeof(Chainon)); pliste = NULL;   
     while(curseur != EOF){
       fscanf(fichier, "%ld", &stationLue);
       fseek(fichier, 1, SEEK_CUR);     //permet de passer à la deuxième colonne.
       fscanf(fichier, "%lf", &donnees);
-      //printf("main station : %ld - elmt %lf\n", stationLue, donnees);
       if(strcmp(tri, "tab") == 0){
         positionInsert = cherchePos(pliste, donnees, sens);
         pliste = insertPos(pliste, positionInsert, stationLue, donnees);
@@ -45,10 +43,9 @@ int main(int argc, char* argv[]) {
       
       
       curseur = fgetc(fichier);
-    }
+  //  }
     
     //génération du fichier de sortie
-    FILE* fichier=NULL;
     fichier = fopen(fichierSortie, "w");  
     if(strcmp(tri, "tab") == 0){
       afficheListe2(pliste, fichier);
@@ -69,7 +66,6 @@ int main(int argc, char* argv[]) {
       printf("WARNING : Le fichier de sortie n'a pas pu être généré\n");
       return 3;
     }  
-  }
 }
 
 
@@ -101,9 +97,6 @@ int max(int a,int b){
 
 
 Chainon* creationChainon(long station, double a){
-//  printf("MRT on rentre dans creationChainon\n");
-//  printf("MRT %lf : %lf\n", stationC, a);
-
   Chainon* c = (Chainon *) malloc(sizeof(Chainon));
   if(c==NULL){
     exit(1);
@@ -155,14 +148,11 @@ void afficheListe2(Chainon *pliste, FILE* fichierTrie){
 
 
 int cherchePos(Chainon* pliste, double valeurCherchee, char* sens){
-//printf("MRT on rentre dans cherchePos\n");
-
   Chainon* p1=pliste;
   int compt=0;
   if (p1 == NULL){    // insertion à l'indice 0
     return 0;
   }
-  //printf("\n");
   while(p1!=NULL){
     if (sens == "c"){
       if (valeurCherchee > p1->elmt){
@@ -188,9 +178,6 @@ int cherchePos(Chainon* pliste, double valeurCherchee, char* sens){
 
 
 Chainon *insertPos( Chainon* pliste, int pos, long station, double elmt){
-//  printf("MRT on rentre dans insertPos\n");
-//  printf("MRT %lf : %lf\n", station, elmt);
-//printf("%d",pos);
   Chainon* nouveau = malloc(sizeof(Chainon*)); Chainon* p1 = malloc(sizeof(Chainon*));
   Chainon* p1Precedent = malloc(sizeof(Chainon*));
   int i;
@@ -209,16 +196,9 @@ Chainon *insertPos( Chainon* pliste, int pos, long station, double elmt){
         p1 = p1->suivant;
       }
     }
-//    printf("%s" , station);
     nouveau = creationChainon(station, elmt);
-//    printf("MRT Creation %lf : %lf\n", nouveau->station, nouveau-> elmt);
     nouveau->suivant = p1; //->suivant;
- //   printf("MRT2 %s : %lf\n", nouveau->station, nouveau-> elmt);
     p1Precedent->suivant = nouveau;
-//    printf("MRT precedent %lf : %lf\n", p1Precedent->station, p1Precedent-> elmt);
-
- //   printf("fin");
-
   }
   free(p1);
   free(nouveau);
