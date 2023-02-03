@@ -79,7 +79,7 @@ while getopts ":p:t:wmhf:d:FGASOQ-:" option; do
         temp="1,11,12,13"
       fi 
       ;; 
-    p) presArg=$OPTARG  #pressure
+    p) presArg=$OPTARG  #pression
        #vérifie que l'argument de p est entre 1 et 3 inclus
        if [ "$presArg" -ge 4 ] || [ "$presArg" -le 0 ] ; then
          echo "Argument invalide" 
@@ -117,8 +117,6 @@ while getopts ":p:t:wmhf:d:FGASOQ-:" option; do
     d) dateMin=$OPTARG
        dateMax=$(eval "echo \${$OPTIND}")
        shift #$((OPTIND - 1))
-       #eval "echo \${$i}"
-       #($(eval "echo \${$i}"))
        ;;
     F) localisation="France"
        let "PresLoc+=1" 
@@ -176,7 +174,11 @@ if [ $taille -eq 0 ] ; then
   exit 1
 fi
 
-
+#On compile si le programme n'existe pas
+if [ ! -f 'tri' ] ; then
+  make
+  make clean 
+fi
 if [ $temp ] ; then
   cut -d';' -f$temp "reduit.csv" > "temperature.csv"
   ./tri temperature.csv temperatureTrie.csv $tri r
@@ -186,8 +188,8 @@ if [ $temp ] ; then
   fi
 fi
 if [ $pres ] ; then
-  cut -d';' -f$pres "reduit.csv" > "pressure.csv"
-  ./tri pressure.csv pressureTrie.csv $tri r
+  cut -d';' -f$pres "reduit.csv" > "pression.csv"
+  ./tri pression.csv pressionTrie.csv $tri r
   codeRetour=$?
   if [ $codeRetour -eq 0 ] ; then
     echo "Affichage du graphique Pression"
@@ -195,15 +197,15 @@ if [ $pres ] ; then
 fi
 if [ $vent ] ; then
   cut -d';' -f$vent "reduit.csv" > "vent.csv"
-  ./tri vent.csv windTrie.csv $tri r
+  ./tri vent.csv ventTrie.csv $tri r
   codeRetour=$?
   if [ $codeRetour -eq 0 ] ; then
     echo "Affichage du graphique Vent"
   fi
 fi
 if [ $hum ] ; then
-  cut -d';' -f$hum "reduit.csv" > "moisture.csv"
-  ./tri moisture.csv moistureTrie.csv $tri r
+  cut -d';' -f$hum "reduit.csv" > "humidité.csv"
+  ./tri humidité.csv humiditéTrie.csv $tri r
   codeRetour=$?
   if [ $codeRetour -eq 0 ] ; then
     echo "Affichage du graphique Humidité"
@@ -211,7 +213,7 @@ if [ $hum ] ; then
 fi
 if [ $alt ] ; then
   cut -d';' -f$alt "reduit.csv" > "alt.csv"
-  ./tri alt.csv heightTrie.csv $tri r
+  ./tri alt.csv altitudeTrie.csv $tri r
   codeRetour=$?
   if [ $codeRetour -eq 0 ] ; then
     echo "Affichage du graphique Altitude"
