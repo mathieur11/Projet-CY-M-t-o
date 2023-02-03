@@ -1,11 +1,3 @@
-//include standard :
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-#include<stdbool.h>
-#include<limits.h>
-#include<string.h>
-#include<unistd.h>
 //include personnel :
 #include"header.h"
 
@@ -239,9 +231,6 @@ Chainon *insertPos( Chainon* pliste, int pos, long station, double elmt){
 
 
 
-
-
-
 /***************************************************************
 ****************************************************************
 ****************************************************************
@@ -249,21 +238,6 @@ Chainon *insertPos( Chainon* pliste, int pos, long station, double elmt){
 ****************************************************************/
 
 
-
-/*Arbre* RechercheABR(Arbre* A, int x){
-  if (!A){
-    return NULL;
-  }
-  if (x < A->elmt){
-    return RechercheABR(A->fg, x);
-  }
-  else{
-    if (x > A->elmt){
-      return RechercheABR(A->fd, x);
-    }
-  }
-    return A;
-}*/
 
 void afficherABR(Arbre* parbre, char* sens, FILE* fichierTrie){
     if (parbre != NULL){
@@ -309,82 +283,5 @@ Arbre* InsereABR(Arbre* A, long station, double donnees){
   }
   return A;
 }
-
-
-/*Arbre* InsereABRIteratif(Arbre* A, int x){
-  Arbre* tmp = A;
-  if (!A){
-    return creerArbre(x);
-  }
-    do{
-      if (x == tmp->elmt){
-        return A;
-      }
-      if (x < tmp->elmt){
-        if (tmp->fg){
-          tmp = tmp->fg;
-        }
-        else{
-          tmp->fg = creerArbre(x);
-          return A;
-        }
-      }
-      else{ // x > tmp->elmt
-        if (tmp->fd){
-          tmp = tmp->fd;
-        }
-        else{
-          tmp->fd = creerArbre(x);
-          return A;
-        }
-      }
-    }while (1);
-}*/
-
-// Dans SuppABR, va supprimer le fils le plus grand (a droite) du fils gauche pris en compte
-/*Arbre* SuppMax(Arbre* A, int *x){
-  Arbre* tmp;
-  if (A->fd){
-    A->fd = SuppMax(A->fd, x);
-  }
-  else{
-    *x = A->elmt; //recuperation de la valeur a remonter en parametre
-    tmp = A;
-    A = A->fg;
-    free(tmp);
-  }
-  return A;
-}*/
-
-
-/*Arbre* SuppABR(Arbre* A, int x){
-  Arbre* tmp;
-  if (A){
-    if (x > A->elmt){
-      A->fd = SuppABR(A->fd, x);
-    }
-    else if (x < A->elmt){
-      A->fg = SuppABR(A->fg, x);
-    }
-    else if (A->fg){
-      A->fg = SuppMax(A->fg, &(A->elmt)); // on remplace elmt par la grande valeur inferieure
-    }
-    else{ // si pas de fils gauche : la racine devient le fils droit
-      tmp = A;
-      A = A->fd;
-      free(tmp);
-    }
-    return A;
-  }
-}*/
-
-
-/****************************************************************
-*****************************************************************
-*****************************************************************
-*****************************************************************
-****************************************************************/
-
-
 
 
